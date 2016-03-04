@@ -67,7 +67,7 @@ exports.handler = function(event, context) {
                     }
                 }
             }).then(function(resp) {
-                context.succeed(wrapResponse(context, 200, resp['tag-suggest'].length, resp['tag-suggest'].options));
+                context.succeed(wrapResponse(context, 200, resp['tag-suggest'].options), resp['tag-suggest'].length);
             }, function(err) {
                 console.log(err.message)
                 context.fail(new Error(err.message));
