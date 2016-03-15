@@ -1,6 +1,4 @@
 module.exports = {
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey: process.env.AWS_SECRET,
   //profile: <shared credentials profile name>, // optional for loading AWS credentials from custom profile 
   region: 'us-east-1',
   handler: 'index.handler',
@@ -14,3 +12,18 @@ module.exports = {
   //   StartingPosition: "TRIM_HORIZON"
   // }
 }
+switch (process.env.TRAVIS_BRANCH) {
+  case 'dev':
+    module.exports.accessKeyId=process.env.DEV_AWS_KEY
+    module.exports.secretAccessKey=process.env.DEV_AWS_SECRET
+    break;
+  case 'release':
+    module.exports.accessKeyId=process.env.QA_AWS_KEY
+    module.exports.secretAccessKey=process.env.QA_AWS_SECRET
+    break;
+  case 'master':
+    module.exports.accessKeyId=process.env.PROD_AWS_KEY
+    module.exports.secretAccessKey=process.env.PROD_AWS_SECRET
+    break;
+}
+
