@@ -10,14 +10,13 @@ var AWS = require('aws-sdk');
 var creds = new AWS.EnvironmentCredentials('AWS');
 
 var es = require('elasticsearch').Client({
-    hosts: 'search-topcoder-squ62azmqlwkvnmztjmk4cq5fq.us-east-1.es.amazonaws.com',
+    hosts: process.env.TAGS_ES_HOST,
     connectionClass: require('http-aws-es'),
     amazonES: {
         region: "us-east-1",
         credentials: creds
     }
 });
-
 /**
  * Provide an event that contains the following keys:
  *
@@ -52,7 +51,7 @@ exports.handler = function(event, context) {
                 context.succeed(wrapResponse(context, 200, resp.hits.hits, resp.hits.total));
             }, function(err) {
                 console.log(err.message)
-                context.fail(new Error(err.message));
+                context.fail(new Error("500_INTERNAL_ERROR " + err.message));
             })
             break;
         case 'suggest':
@@ -67,17 +66,18 @@ exports.handler = function(event, context) {
                     }
                 }
             }).then(function(resp) {
-                context.succeed(wrapResponse(context, 200, resp['tag-suggest'].options), resp['tag-suggest'].length);
+                console.log(JSON.stringify(resp['tag-suggest'][0].options));
+                context.succeed(wrapResponse(context, 200, resp['tag-suggest'][0].options, resp['tag-suggest'][0].length));
             }, function(err) {
                 console.log(err.message)
-                context.fail(new Error(err.message));
+                context.fail(new Error("500_INTERNAL_ERROR" + err.message));
             })
             break;
         case 'ping':
             context.succeed('pong');
             break;
         default:
-            context.fail(new Error('Unrecognized operation "' + operation + '"'));
+            context.fail(new Error('400_BAD_REQUEST: Unrecognized operation "' + operation + '"'));
     }
 };
 

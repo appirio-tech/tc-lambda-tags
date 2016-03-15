@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+- 5.5.0
+install:
+- npm install
+script:
+- gulp test
+sudo: false
+deploy:
+  provider: script
+  script: export AWS_KEY=$DEV_AWS_KEY; export AWS_SECRET=$DEV_AWS_SECRET; gulp deploy
+  on: 
+    branch: dev
+
+env:
+  matrix:
+    - CXX=g++-4.8
+  global:
+    # DEV_AWS_KEY
+    - secure: 
+    # DEV_AWS_SECRET
+    - secure: 
+notifications:
+  slack:
+    secure: PMGlpdBoRzMlIjCsPWdXJ1wf550b+mpX0x44ggGWNL7ErpNebfyqIbXf4VJXYQDmhVJt31ygDaxTtj8XwZJlbvQjE6WGHU26KvL/efGJJL5EmgFD8LDBFpsbn49PyoZuVOTbSzqP8d8WCCPo4oBvX2r2Q2Ixh/tUx7i4Bcv0XwNpWAR75v1Yq/NftEI48k2GcI3oHqmuEgLHdP93k1rCUM4sBsgkr4PCltZfoE2AWlF6wY59w/oFiKj4FwycY8QjJZa/zbSQq1B/9QD7n4YBY4QjVv3LmjshEiQv1HGo2rNLV+/BB5ZoQ6JEH9h+seduHNTF+mkToKbJ2YjDERLlqLFYWVQKXTqFkSdYuknguJ3uOfXFaGtPDSqTRljE6WW6UDIJi9lDpxFHjH2q848/2O03RKtYeFKJWNbVb7Q2PWTBFxx6OurYra+tbUAorQiYmAQxd0vJY+qzGIDJZIQ8yDE4C10heOhfRyU8wJSKF3xJUKKWVGfBuHivFBZOETFSg0uVBcJnsXRcErvEQz0LuKaZfP81bIokcKUGxum/xyp9mYhYqWDvIj31RUhDMiRxXTPe9PhW0mlOtRG7tm2+8G08exHPSfONSV2IPUtlQt4j2/+I22ncOwtsm6yZzXXbDjoMR2sCHIyJj3lVECOqAnCfNJ6Q0CNJ93LqxKSHdFU=
