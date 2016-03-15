@@ -9,7 +9,7 @@ script:
 sudo: false
 deploy:
   provider: script
-  script: export AWS_KEY=$DEV_AWS_KEY; export AWS_SECRET=$DEV_AWS_SECRET; gulp deploy
+  script: gulp deploy
   on: 
     branch: dev
 
