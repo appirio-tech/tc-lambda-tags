@@ -9,17 +9,17 @@ script:
   - gulp test
 sudo: false
 deploy:
- provider: lambda
- access_key_id: $DEV_AWS_KEY
- secret_access_key: $DEV_AWS_SECRET
- function_name: tc-tags-api
- region: 'us-east-1',
- handler: 'index.handler',
- role: $LAMBDA_AWS_ROLE
- timeout: 5
- memory_size: 248
- on: 
-   branch: dev
+  provider: lambda
+  access_key_id: $DEV_AWS_KEY
+  secret_access_key: $DEV_AWS_SECRET
+  function_name: tc-tags-api
+  region: 'us-east-1',
+  handler: 'index.handler',
+  role: $LAMBDA_AWS_ROLE
+  timeout: 5
+  memory_size: 512
+  on: 
+    branch: dev
 
 env:
   matrix:
