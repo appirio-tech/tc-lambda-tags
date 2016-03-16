@@ -5,7 +5,7 @@ install:
 - npm install
 before_script:
   - npm install -g gulp
-  - chmod +x ./scripts/deploy
+  - chmod +x ./scripts/deploy.sh
 script:
   - gulp test
 sudo: false
