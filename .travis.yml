@@ -20,6 +20,18 @@ env:
     - CXX=g++-4.8
   global:
     - TAGS_ES_HOST=search-topcoder-squ62azmqlwkvnmztjmk4cq5fq.us-east-1.es.amazonaws.com
+    - AWS_FUNCTION_NAME=tc-tags-api
+    - AWS_REGION=us-east-1
+    - AWS_ENVIRONMENT=development
+    - AWS_HANDLER=index.handler
+    - AWS_MODE=event
+    - AWS_MEMORY_SIZE=512
+    - AWS_TIMEOUT=5
+    - AWS_DESCRIPTION=Search, suggest functionality for tags
+    - AWS_RUNTIME=nodejs
+
+    # AWS_ROLE_ARN
+    secure: "MN3trAnUFkTgJI6fMswy0P6y13cIhB7kL94U2LYwQB72W4xfq+CQUssJFkJkzpfxVki74KxkUnWFEFLmlQBEJIR8PfMV+9cQj70KI5m7pyIaD+T0icEsy3F1QBGE/P2QkRAOnnStPQTJJrrFuC1WcMdYKCXkBMMOU/v36R99GO0Fq2xzASEXzvgLgwqtk4iauezYT9lvwUnzAX/+yF7qe/AcUYXiO+ESfWxcMFJzM09oFEaKi9DP4DQmi7uKIe8Z6ijq/yyoZ2jg6u2/Guvgq3GwKwrluv8nX4eOIydXenfWLg9B6opJ3rHmfYOZImqeh1TDj2vK5hY8kfk7lC/zQP8SDyGsf+hXv8BbADh4p88Y6Jh2/RkuXODUCdkp5PRgSy0H79qauw9t94D/ZtEeIrWyHwYHEiH4eAl4papCh2W7xOMvP/pZjmB7UqDrMe8wyJRZNvbDi5XkB3rHBNwWnxIpkoG7+PmuAujREjJQLqRuTmwwXxjvBrReR/5vQCaVHMI/ddaRuOQTfc2xgP9OEEClEV9pgzbccdbB9pRKS87oP4P8c+VMKrpTjpRvD9qRPhH6mAnGw6ceZBYq3/WZvo5morTdnvlGrWWbqo9smJGsQleRjAifKTaaIyvgvAXr3uSul4iCuD9i3vNdfVY5QNZoqBG99GeULL5MrLfvzEI="
 
     # DEV_AWS_KEY
     - secure: BwUf0WljxuSU11iUhhff+BpZbFIsgHdr8wVEzsUjdgrMVyNjh5bSOjbDWXKV9b+9ZOONd2retgBD1JAdCkmEnaZczR9GvcBgQFSHKUHcNQZc2FwzjZcVeWK0Jeo9ga1UUi8UttEIZJ60LXatOp+a9hkSWxJcvGAt8VhA1oPFvwtdoqoe3BkQ6CNqkjLHfTGBj66PbMKOLVautK1BVAOcwA0jHr8R9Ge4sMtLl6YhGiZcdNqexN/Wpbg7b/lLyJbb3LV3teIQ1M0HuRujLmiD23vW9oLdbtSXuL+SZGQuMf8Mu+X+7OdONV+l/64i1OHDLtjbtw/b6mRElROYpaTn/Az6S3t9Jj3Y2PJWeT/rrlwL8XUOT6nBlfydBpHoa5NJNeIF0HvkE0g9XYxCLF3xhst3eUYQYtht/vn4MxOYYFBN83Pn2vyfv79N6JZjDRCwTmiVHgdCyPQvHii3pyknD7WPRpKJ2GcP503zp0swouZwd0RdLL70vnJWD+Cig97buHGXu1+tefDmS4Rzfa7vRSnSuuIgN3VPScJ7K1eKmGtN87v69Nxcdy3Oy3YV94mu+xpL/MUNvNKpdAvliLn37B5Cq+yU99hEdwewQe0Bz3LFG3AyXOJx15nAIkCC1u7xBOycdwGBSQE4oL7/Sg5Jdx6oB3EpTO2INXw/vlN/cuQ=
