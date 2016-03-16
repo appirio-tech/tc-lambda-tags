@@ -19,6 +19,8 @@ env:
   matrix:
     - CXX=g++-4.8
   global:
+    - TAGS_ES_HOST=search-topcoder-squ62azmqlwkvnmztjmk4cq5fq.us-east-1.es.amazonaws.com
+
     # DEV_AWS_KEY
     - secure: BwUf0WljxuSU11iUhhff+BpZbFIsgHdr8wVEzsUjdgrMVyNjh5bSOjbDWXKV9b+9ZOONd2retgBD1JAdCkmEnaZczR9GvcBgQFSHKUHcNQZc2FwzjZcVeWK0Jeo9ga1UUi8UttEIZJ60LXatOp+a9hkSWxJcvGAt8VhA1oPFvwtdoqoe3BkQ6CNqkjLHfTGBj66PbMKOLVautK1BVAOcwA0jHr8R9Ge4sMtLl6YhGiZcdNqexN/Wpbg7b/lLyJbb3LV3teIQ1M0HuRujLmiD23vW9oLdbtSXuL+SZGQuMf8Mu+X+7OdONV+l/64i1OHDLtjbtw/b6mRElROYpaTn/Az6S3t9Jj3Y2PJWeT/rrlwL8XUOT6nBlfydBpHoa5NJNeIF0HvkE0g9XYxCLF3xhst3eUYQYtht/vn4MxOYYFBN83Pn2vyfv79N6JZjDRCwTmiVHgdCyPQvHii3pyknD7WPRpKJ2GcP503zp0swouZwd0RdLL70vnJWD+Cig97buHGXu1+tefDmS4Rzfa7vRSnSuuIgN3VPScJ7K1eKmGtN87v69Nxcdy3Oy3YV94mu+xpL/MUNvNKpdAvliLn37B5Cq+yU99hEdwewQe0Bz3LFG3AyXOJx15nAIkCC1u7xBOycdwGBSQE4oL7/Sg5Jdx6oB3EpTO2INXw/vlN/cuQ=
     # DEV_AWS_SECRET
