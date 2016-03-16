@@ -5,15 +5,16 @@ install:
 - npm install
 before_script:
   - npm install -g gulp
-  - chmod +x ./scripts/deploy.sh
 script:
   - gulp test
 sudo: false
-deploy:
-  provider: script
-  script:  ./scripts/deploy.sh
-  on: 
-    branch: dev
+after_success: 
+  "gulp deploy"
+#deploy:
+#  provider: script
+#  script:  ./scripts/deploy.sh
+#  on: 
+#    branch: dev
 
 env:
   matrix:
