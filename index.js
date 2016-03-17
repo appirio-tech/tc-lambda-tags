@@ -19,6 +19,13 @@ var es = require('elasticsearch').Client({
     credentials: creds
   }
 });
+
+String.prototype.endsWith = function(str)
+{
+    var lastIndex = this.lastIndexOf(str);
+    return (lastIndex !== -1) && (lastIndex + str.length === this.length);
+}
+
 /**
  * Provide an event that contains the following keys:
  *
@@ -30,7 +37,6 @@ var es = require('elasticsearch').Client({
 
 exports.handler = function(event, context) {
   console.log('Received event:', JSON.stringify(event, null, 2));
-  console.log(process.env.TAGS_ES_HOST)
   var operation = getOperation(event, context)
 
   // convert query params to JSON
