@@ -35,7 +35,7 @@ var testLambda = function(event, ctx, resp) {
   })
 }
 
-describe.skip('When receiving an invalid request', function() {
+describe('When receiving an invalid request', function() {
   var resp = { success: null, error: null };
   const ctx = context()
   testLambda({
@@ -143,7 +143,7 @@ describe('When receiving a valid search request', function() {
   })
 })
 
-describe.skip('When receiving a valid suggest request', function() {
+describe('When receiving a valid suggest request', function() {
   var resp = { success: null, error: null };
   const ctx = context()
 
