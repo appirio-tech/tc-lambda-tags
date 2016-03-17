@@ -4,16 +4,31 @@ node_js:
 install:
 - npm install
 before_script:
-  - chmod +x scripts/deploy.sh
+  - chmod +x deploy.sh
 script:
   - npm test
 sudo: false
+after_success: 
+  "gulp deploy"
 deploy:
   skip_cleanup: true
   provider: script
-  script: scripts/deploy.sh
+  script: deploy.sh
   on:
     branch: dev
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: deploy.sh
+  on:
+    branch: release
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: deploy.sh
+  on:
+    branch: master
+
 env:
   matrix:
     - CXX=g++-4.8
@@ -26,7 +41,7 @@ env:
     - AWS_MODE=event
     - AWS_MEMORY_SIZE=512
     - AWS_TIMEOUT=5
-    - AWS_DESCRIPTION=Search, suggest functionality for tags
+    - AWS_DESCRIPTION="Search, suggest functionality for tags"
     - AWS_RUNTIME=nodejs
 
     # DEV_AWS_KEY

@@ -12,18 +12,3 @@ module.exports = {
   memorySize: 512
   // eventSource: {}
 }
-switch (process.env.TRAVIS_BRANCH) {
-  case 'dev':
-    module.exports.accessKeyId=process.env.DEV_AWS_KEY
-    module.exports.secretAccessKey=process.env.DEV_AWS_SECRET
-    break;
-  case 'release':
-    module.exports.accessKeyId=process.env.QA_AWS_KEY
-    module.exports.secretAccessKey=process.env.QA_AWS_SECRET
-    break;
-  case 'master':
-    module.exports.accessKeyId=process.env.PROD_AWS_KEY
-    module.exports.secretAccessKey=process.env.PROD_AWS_SECRET
-    break;
-}
-
