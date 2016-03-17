@@ -25,7 +25,7 @@
     "elasticsearch"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha src/**/*.js"
+    "test": "./node_modules/.bin/mocha src/**/*.spec.js"
   },
   "author": "",
   "license": "ISC"
