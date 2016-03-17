@@ -30,6 +30,7 @@ var es = require('elasticsearch').Client({
 
 exports.handler = function(event, context) {
   console.log('Received event:', JSON.stringify(event, null, 2));
+  console.log(process.env.TAGS_ES_HOST)
   var operation = getOperation(event, context)
 
   // convert query params to JSON
@@ -88,7 +89,7 @@ exports.handler = function(event, context) {
     default:
       context.fail(new Error('400_BAD_REQUEST: Unrecognized operation "' + operation + '"'));
   }
-};
+}
 
 
 function wrapResponse(context, status, body, count) {
