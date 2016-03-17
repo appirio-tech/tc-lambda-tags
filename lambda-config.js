@@ -1,16 +1,16 @@
 module.exports = {
-  //profile: <shared credentials profile name>, // optional for loading AWS credentials from custom profile 
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: 'us-east-1',
+  description: "Lambda function to support Tags related CRUD",
+  handler: 'index.handler',
+  role: process.env.AWS_LAMBDA_ROLE_ARN,
   region: 'us-east-1',
   handler: 'index.handler',
-  role: 'arn:aws:iam::811668436784:role/ap-lambda-default',
   functionName: 'tc-tags-api',
   timeout: 5,
-  memorySize: 512,
-  // eventSource: {
-  //   EventSourceArn: <event source such as kinesis ARN>,
-  //   BatchSize: 200,
-  //   StartingPosition: "TRIM_HORIZON"
-  // }
+  memorySize: 512
+  // eventSource: {}
 }
 switch (process.env.TRAVIS_BRANCH) {
   case 'dev':
