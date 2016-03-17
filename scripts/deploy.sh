@@ -13,5 +13,5 @@ elif [ "$TRAVIS_BRANCH" = "master" ]; then
   export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET
 fi
 
-env
 ./node_modules/.bin/node-lambda deploy
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi

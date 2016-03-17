@@ -1,10 +1,17 @@
+/**
+ * Add mocks here .. cos well.. just do it..
+ */
+var elasticsearch = require('elasticsearch')
+var es = {}
+elasticsearch.Client = function() {
+  return es
+}
 var chai = require("chai");
 var expect = require("chai").expect,
   lambdaToTest = require('../index');
 
-  sinon = require("sinon");
+sinon = require("sinon");
 chai.use(require('sinon-chai'));
-
 const context = require('aws-lambda-mock-context');
 
 var testLambda = function(event, ctx, resp) {
@@ -28,14 +35,22 @@ var testLambda = function(event, ctx, resp) {
 }
 
 describe('When receiving an invalid request', function() {
-  var resp = {success: null, error: null};
+  var resp = { success: null, error: null };
   const ctx = context()
   testLambda({
-    operation: 'search1',
-    term: 'java',
-    "request": {
-      "type": "LaunchRequest",
-      "requestId": "request5678"
+    "stage": "test-invoke-stage",
+    "requestId": "test-invoke-request",
+    "resourcePath": "/v3/tags1",
+    "resourceId": "dxtdde",
+    "httpMethod": "GET",
+    "sourceIp": "test-invoke-source-ip",
+    "userAgent": "Apache-HttpClient/4.3.4 (java 1.5)",
+    "caller": "AIDAJJMZ5ZCBYPW45NZRC",
+    "body": "{}",
+    "queryParams": {
+      "filter": "name%3Djava",
+      "sort": "min",
+      "fields": "a1,a2"
     }
   }, ctx, resp)
 
@@ -50,30 +65,138 @@ describe('When receiving an invalid request', function() {
       expect(resp.error.message).to.match(/400_BAD_REQUEST/)
     })
   })
-
-
 })
 
-// describe.skip('When receiving a valid search request', function() {
-//   var resp = {success: null, error: null};
-//   const ctx = context();
-//   var sandbox, esStub;
-//   sandbox = sinon.sandbox.create();
-//   esStub = sandbox.stub(es)
+describe('When receiving a valid search request', function() {
+  var resp = { success: null, error: null };
+  const ctx = context()
 
-//   testLambda({
-//     operation: 'search',
-//     term: 'java',
-//     "request": {
-//       "type": "LaunchRequest",
-//       "requestId": "request5678"
-//     }
-//   }, ctx, resp)
+  es.search = function(input) {
+    return Promise.resolve({
+      "took": 31,
+      "timed_out": false,
+      "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+      },
+      "hits": {
+        "total": 1,
+        "max_score": 4.5115457,
+        "hits": [{
+          "_index": "tags",
+          "_type": "tag",
+          "_id": "247",
+          "_score": 4.5115457,
+          "_source": {
+            "domain": "SKILLS",
+            "name": "Java",
+            "id": 247,
+            "categories": [
+              "DEVELOP"
+            ],
+            "priority": 14,
+            "status": "APPROVED",
+            "suggest": {
+              "input": "Java",
+              "output": "Java",
+              "payload": {
+                "id": 247,
+                "domain": "SKILLS"
+              }
+            }
+          }
+        }]
+      }
+    })
+  }
+  testLambda({
+    "stage": "test-invoke-stage",
+    "requestId": "test-invoke-request",
+    "resourcePath": "/v3/tags",
+    "resourceId": "dxtdde",
+    "httpMethod": "GET",
+    "sourceIp": "test-invoke-source-ip",
+    "userAgent": "Apache-HttpClient/4.3.4 (java 1.5)",
+    "caller": "AIDAJJMZ5ZCBYPW45NZRC",
+    "body": "{}",
+    "queryParams": {
+      "filter": "name%3Dblah%26id%3D11",
+      "sort": "min",
+      "fields": "a1,a2"
+    }
+  }, ctx, resp)
 
-//   describe.skip('then success response ', function() {
-//     it('should be a valid response', function() {
-//       console.log(resp.error)
-//       expect(resp.success).to.not.be.null
-//     })
-//   })
-// })
+  describe('then success response ', function() {
+    var spy = sinon.spy(es, 'search')
+    it('should be a valid response', function() {
+      expect(spy.calledOnce).to.be.true
+      expect(resp.success.result).to.not.be.null
+      var result = resp.success.result
+      expect(result.success).to.be.true
+      expect(result.metadata).to.deep.equal({ totalCount: 1 })
+      expect(result.status).to.equal(200)
+      expect(result.content).to.have.lengthOf(1)
+    })
+  })
+})
+
+describe('When receiving a valid suggest request', function() {
+  var resp = { success: null, error: null };
+  const ctx = context()
+
+  es.suggest = function(input) {
+    return Promise.resolve({
+      "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+      },
+      "tag-suggest": [{
+        "text": "jav",
+        "offset": 0,
+        "length": 3,
+        "options": [{
+          "text": "Java",
+          "score": 1,
+          "payload": {
+            "id": 247,
+            "domain": "SKILLS"
+          }
+        }, {
+          "text": "JavaScript",
+          "score": 1,
+          "payload": {
+            "id": 248,
+            "domain": "SKILLS"
+          }
+        }]
+      }]
+    })
+  }
+  testLambda({
+    "stage": "test-invoke-stage",
+    "requestId": "test-invoke-request",
+    "resourcePath": "/v3/tags/_suggest",
+    "resourceId": "dxtdde",
+    "httpMethod": "GET",
+    "sourceIp": "test-invoke-source-ip",
+    "userAgent": "Apache-HttpClient/4.3.4 (java 1.5)",
+    "caller": "AIDAJJMZ5ZCBYPW45NZRC",
+    "body": "{}",
+    "queryParams": { q: "jav" }
+  }, ctx, resp)
+
+  describe('then success response ', function() {
+    var spy = sinon.spy(es, 'suggest')
+    it('should be a valid response', function() {
+      expect(spy.calledOnce).to.be.true
+      expect(resp.success.result).to.not.be.null
+      var result = resp.success.result
+      expect(result.success).to.be.true
+      expect(result.metadata).to.deep.equal({ totalCount: 2 })
+      expect(result.status).to.equal(200)
+      expect(result.content).to.have.lengthOf(2)
+    })
+  })
+})
