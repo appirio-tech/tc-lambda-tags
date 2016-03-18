@@ -8,24 +8,20 @@ before_script:
 script:
   - npm test
 sudo: false
-after_success: 
-  "gulp deploy"
 deploy:
+- provider: script
   skip_cleanup: true
-  provider: script
-  script: deploy.sh
+  script: ./deploy.sh
   on:
     branch: dev
-deploy:
+- provider: script
   skip_cleanup: true
-  provider: script
-  script: deploy.sh
+  script: ./deploy.sh
   on:
     branch: release
-deploy:
+- provider: script
   skip_cleanup: true
-  provider: script
-  script: deploy.sh
+  script: ./deploy.sh
   on:
     branch: master
 
