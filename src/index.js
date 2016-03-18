@@ -13,6 +13,7 @@ var creds = new AWS.EnvironmentCredentials('AWS');
 var querystring = require('querystring')
 var es = require('elasticsearch').Client({
   hosts: process.env.TAGS_ES_HOST,
+  apiVersion: '1.5',
   connectionClass: require('http-aws-es'),
   amazonES: {
     region: "us-east-1",
@@ -20,21 +21,14 @@ var es = require('elasticsearch').Client({
   }
 });
 
-String.prototype.endsWith = function(str)
-{
-    var lastIndex = this.lastIndexOf(str);
-    return (lastIndex !== -1) && (lastIndex + str.length === this.length);
+String.prototype.endsWith = function(str) {
+  var lastIndex = this.lastIndexOf(str);
+  return (lastIndex !== -1) && (lastIndex + str.length === this.length);
 }
 
 /**
- * Provide an event that contains the following keys:
- *
- *   - operation: one of the operations in the switch statement below
- *   - tableName: required for operations that interact with DynamoDB
- *   - payload: a parameter to pass to the operation being performed
+ * Entry point for lambda function handler
  */
-
-
 exports.handler = function(event, context) {
   console.log('Received event:', JSON.stringify(event, null, 2));
   var operation = getOperation(event, context)
@@ -60,12 +54,19 @@ exports.handler = function(event, context) {
             }
           }
         }).then(function(resp) {
-          context.succeed(wrapResponse(context, 200, resp.hits.hits, resp.hits.total));
+          console.log('Resp', JSON.stringify(resp, null, 2))
+          var content = resp.hits.hits.map(function(obj) {
+            // remove suggest prop from response
+            delete obj._source.suggest
+            return obj._source;
+          });
+          console.log('Content', JSON.stringify(content, null, 2))
+          context.succeed(wrapResponse(context, 200, content, resp.hits.total))
         }, function(err) {
           context.fail(new Error("500_INTERNAL_ERROR " + err.message));
         })
       }
-      break;
+      break
     case 'SUGGEST':
       var term = _.get(event, 'queryParams.q', '')
       term = decodeURIComponent(term)
@@ -78,7 +79,8 @@ exports.handler = function(event, context) {
             "tag-suggest": {
               "text": term,
               "completion": {
-                "field": "suggest"              }
+                "field": "suggest"
+              }
             }
           }
         }).then(function(resp) {

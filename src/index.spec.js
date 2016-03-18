@@ -6,9 +6,10 @@ var es = {}
 elasticsearch.Client = function() {
   return es
 }
+
 var chai = require("chai");
 var expect = require("chai").expect,
-  lambdaToTest = require('../index');
+  lambdaToTest = require('./index.js');
 
 sinon = require("sinon");
 chai.use(require('sinon-chai'));
@@ -68,7 +69,7 @@ describe('When receiving an invalid request', function() {
 })
 
 describe('When receiving a valid search request', function() {
-  var resp = { success: null, error: null };
+  var resp = { success: null, error: null }
   const ctx = context()
 
   es.search = function(input) {
@@ -130,9 +131,10 @@ describe('When receiving a valid search request', function() {
   describe('then success response ', function() {
     var spy = sinon.spy(es, 'search')
     it('should be a valid response', function() {
+      var result = resp.success.result
+      console.log(result)
       expect(spy.calledOnce).to.be.true
       expect(resp.success.result).to.not.be.null
-      var result = resp.success.result
       expect(result.success).to.be.true
       expect(result.metadata).to.deep.equal({ totalCount: 1 })
       expect(result.status).to.equal(200)

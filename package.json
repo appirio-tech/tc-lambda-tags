@@ -13,17 +13,19 @@
     "aws-sdk": "^2.2.41",
     "chai": "^3.5.0",
     "dynamodb-doc": "^1.0.0",
+    "gulp": "^3.9.1",
     "mocha": "^2.4.5",
-    "node-lambda": "^0.7.1",
+    "run-sequence": "^1.1.5",
     "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "tc-lambda-gulp-tasks": "1.0.0"
   },
   "bundledDependencies": [
     "http-aws-es",
     "elasticsearch"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha src/**/*.spec.js"
   },
   "author": "",
   "license": "ISC"
