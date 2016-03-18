@@ -6,6 +6,7 @@ var es = {}
 elasticsearch.Client = function() {
   return es
 }
+require('es6-promise').polyfill();
 
 var chai = require("chai");
 var expect = require("chai").expect,
@@ -24,11 +25,11 @@ var testLambda = function(event, ctx, resp) {
     lambdaToTest.handler(event, ctx)
       //Captures the response and/or errors
     ctx.Promise
-      .then(response => {
+      .then(function(response) {
         resp.success = response;
         done();
       })
-      .catch(err => {
+      .catch(function(err) {
         resp.error = err;
         done();
       })
