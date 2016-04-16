@@ -44,14 +44,14 @@ exports.handler = function(event, context) {
       if (term.length == 0) {
         context.fail(new Error("400_BAD_REQUEST: 'name' param is currently required to filter"));
       } else {
-        console.log('Term to send to es: ', _.escapeRegExp(term))
+        console.log('Term to send to es: ', term)
         es.search({
           index: 'tags',
           type: 'tag',
           body: {
             query: {
               term: {
-                name: _.escapeRegExp(term)
+                name: term
               }
             }
           }
