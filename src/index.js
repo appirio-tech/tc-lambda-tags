@@ -16,15 +16,10 @@ var es = require('elasticsearch').Client({
   apiVersion: '1.5',
   connectionClass: require('http-aws-es'),
   amazonES: {
-    region: "us-east-1",
+    region: 'us-east-1',
     credentials: creds
   }
 });
-
-String.prototype.endsWith = function(str) {
-  var lastIndex = this.lastIndexOf(str);
-  return (lastIndex !== -1) && (lastIndex + str.length === this.length);
-}
 
 // Entry point for the lambda function handler
 exports.handler = function(event, context) {
@@ -42,7 +37,7 @@ exports.handler = function(event, context) {
       var term = _.get(filter, 'name', '')
 
       if (term.length == 0) {
-        context.fail(new Error("400_BAD_REQUEST: 'name' param is currently required to filter"));
+        context.fail(new Error('400_BAD_REQUEST: \'name\' param is currently required to filter'));
       } else {
         console.log('Term to send to es: ', term)
         es.search({
@@ -68,7 +63,7 @@ exports.handler = function(event, context) {
 
           context.succeed(wrapResponse(context, 200, content, resp.hits.total))
         }, function(err) {
-          context.fail(new Error("500_INTERNAL_ERROR " + err.message));
+          context.fail(new Error('500_INTERNAL_ERROR ' + err.message));
         })
       }
       break
@@ -77,15 +72,15 @@ exports.handler = function(event, context) {
       term = decodeURIComponent(term)
 
       if (term.length == 0) {
-        context.fail(new Error("400_BAD_REQUEST: 'q' param is required for auto-complete"));
+        context.fail(new Error('400_BAD_REQUEST: \'q\' param is required for auto-complete'));
       } else {
         es.suggest({
           index: 'tags',
           body: {
-            "tag-suggest": {
-              "text": term,
-              "completion": {
-                "field": "suggest"
+            'tag-suggest': {
+              text: term,
+              completion: {
+                field: 'suggest'
               }
             }
           }
@@ -94,7 +89,7 @@ exports.handler = function(event, context) {
 
           context.succeed(wrapResponse(context, 200, content, content.length));
         }, function(err) {
-          context.fail(new Error("500_INTERNAL_ERROR" + err.message));
+          context.fail(new Error('500_INTERNAL_ERROR' + err.message));
         })
       }
 
@@ -134,9 +129,9 @@ function wrapResponse(context, status, body, count) {
 function getOperation(event, context) {
   switch (event.httpMethod.toUpperCase()) {
     case 'GET':
-      if (event.resourcePath.endsWith('tags') || event.resourcePath.endsWith('tags/')) {
+      if (_.endsWith(event.resourcePath, 'tags') || _.endsWith(event.resourcePath, 'tags/')) {
         return 'SEARCH'
-      } else if (event.resourcePath.endsWith('_suggest') || event.resourcePath.endsWith('_suggest/')) {
+      } else if (_.endsWith(event.resourcePath, '_suggest') || _.endsWith(event.resourcePath, '_suggest/')) {
         return 'SUGGEST'
       }
     default:
