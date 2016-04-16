@@ -14,11 +14,11 @@ var expect = require("chai").expect,
 
 sinon = require("sinon");
 chai.use(require('sinon-chai'));
-const context = require('aws-lambda-mock-context');
+var context = require('aws-lambda-mock-context');
 
 var testLambda = function(event, ctx, resp) {
-  // Fires once for the group of tests, done is mocha's callback to 
-  // let it know that an   async operation has completed before running the rest 
+  // Fires once for the group of tests, done is mocha's callback to
+  // let it know that an   async operation has completed before running the rest
   // of the tests, 2000ms is the default timeout though
   before(function(done) {
     //This fires the event as if a Lambda call was being sent in
@@ -38,7 +38,7 @@ var testLambda = function(event, ctx, resp) {
 
 describe('When receiving an invalid request', function() {
   var resp = { success: null, error: null };
-  const ctx = context()
+  var ctx = context()
   testLambda({
     "stage": "test-invoke-stage",
     "requestId": "test-invoke-request",
@@ -71,7 +71,7 @@ describe('When receiving an invalid request', function() {
 
 describe('When receiving a valid search request', function() {
   var resp = { success: null, error: null }
-  const ctx = context()
+  var ctx = context()
 
   es.search = function(input) {
     return Promise.resolve({
@@ -123,7 +123,7 @@ describe('When receiving a valid search request', function() {
     "caller": "AIDAJJMZ5ZCBYPW45NZRC",
     "body": "{}",
     "queryParams": {
-      "filter": "name%3Dblah%26id%3D11",
+      "filter": "name=blah%26id%3D11",
       "sort": "min",
       "fields": "a1,a2"
     }
@@ -146,7 +146,7 @@ describe('When receiving a valid search request', function() {
 
 describe('When receiving a valid suggest request', function() {
   var resp = { success: null, error: null };
-  const ctx = context()
+  var ctx = context()
 
   es.suggest = function(input) {
     return Promise.resolve({
