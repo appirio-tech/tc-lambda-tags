@@ -50,7 +50,7 @@ exports.handler = function(event, context) {
           type: 'tag',
           body: {
             query: {
-              match: {
+              term: {
                 name: _.escapeRegExp(term)
               }
             }
