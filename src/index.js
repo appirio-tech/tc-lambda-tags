@@ -36,7 +36,7 @@ exports.handler = function(event, context) {
   switch (operation) {
     case 'SEARCH':
       var filter = _.get(event, 'queryParams.filter', '')
-      filter = querystring.parse(decodeURIComponent(filter))
+      filter = querystring.parse(filter)
 
       // Make sure name param was passed is non-empty
       var term = _.get(filter, 'name', '')
