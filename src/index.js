@@ -30,7 +30,7 @@ exports.handler = function(event, context) {
   // Convert query params to JSON
   switch (operation) {
     case 'SEARCH':
-      var filterFromURL = _.get(event, 'queryParams.filter', '')
+      var filterFromURL = _.get(event, 'params.querystring.filter', '')
 
       // Replace %3D with = so that querystring.parse works correctly
       var modifiedFilter = _.replace(filterFromURL, '%3D', '=')
@@ -72,7 +72,7 @@ exports.handler = function(event, context) {
       }
       break
     case 'SUGGEST':
-      var term = _.get(event, 'queryParams.q', '')
+      var term = _.get(event, 'params.querystring.q', '')
       term = decodeURIComponent(term)
 
       if (term.length == 0) {
@@ -131,11 +131,14 @@ function wrapResponse(context, status, body, count) {
  * @return String operation
  */
 function getOperation(event, context) {
-  switch (event.httpMethod.toUpperCase()) {
+  var method = _.get(event, 'context.http-method', '')
+  var resourcePath = _.get(event, 'context.resource-path', '')
+
+  switch (method.toUpperCase()) {
     case 'GET':
-      if (_.endsWith(event.resourcePath, 'tags') || _.endsWith(event.resourcePath, 'tags/')) {
+      if (_.endsWith(resourcePath, 'tags') || _.endsWith(resourcePath, 'tags/')) {
         return 'SEARCH'
-      } else if (_.endsWith(event.resourcePath, '_suggest') || _.endsWith(event.resourcePath, '_suggest/')) {
+      } else if (_.endsWith(resourcePath, '_suggest') || _.endsWith(resourcePath, '_suggest/')) {
         return 'SUGGEST'
       }
     default:
