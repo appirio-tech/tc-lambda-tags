@@ -9,5 +9,5 @@
  "caller" : "AIDAJUYC3TUFF3VEGQ5PQ",
  "body": "{}",
  "queryParams": {
-  "filter": "name=c%2B%2B"}
+  "filter": "name%3Dc%2B%2B"}
 }

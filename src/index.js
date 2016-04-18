@@ -30,8 +30,11 @@ exports.handler = function(event, context) {
   // Convert query params to JSON
   switch (operation) {
     case 'SEARCH':
-      var filter = _.get(event, 'queryParams.filter', '')
-      filter = querystring.parse(filter)
+      var filterFromURL = _.get(event, 'queryParams.filter', '')
+
+      // Replace %3D with = so that querystring.parse works correctly
+      var modifiedFilter = _.replace(filterFromURL, '%3D', '=')
+      filter = querystring.parse(modifiedFilter)
 
       // Make sure name param was passed is non-empty
       var term = _.get(filter, 'name', '')
@@ -40,6 +43,7 @@ exports.handler = function(event, context) {
         context.fail(new Error('400_BAD_REQUEST: \'name\' param is currently required to filter'));
       } else {
         console.log('Term to send to es: ', term)
+
         es.search({
           index: 'tags',
           type: 'tag',
