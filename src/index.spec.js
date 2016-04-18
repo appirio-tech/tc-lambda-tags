@@ -123,7 +123,7 @@ describe('When receiving a valid search request', function() {
     "caller": "AIDAJJMZ5ZCBYPW45NZRC",
     "body": "{}",
     "queryParams": {
-      "filter": "name=blah%26id%3D11",
+      "filter": "name%3Dblah%26id%3D11",
       "sort": "min",
       "fields": "a1,a2"
     }
