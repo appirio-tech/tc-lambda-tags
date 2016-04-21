@@ -3,7 +3,7 @@
  */
 
 var mockEvent = {
-  "body-json": {},
+  "body": {},
   "params": {
       "path": {},
       "querystring": {
