@@ -44,6 +44,8 @@ exports.handler = function(event, context) {
       } else {
         console.log('Term to send to es: ', term)
 
+        term = decodeURIComponent(term.toLowerCase())
+
         es.search({
           index: 'tags',
           type: 'tag',
