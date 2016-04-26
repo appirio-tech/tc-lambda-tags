@@ -42,6 +42,8 @@ exports.handler = function(event, context) {
       if (term.length == 0) {
         context.fail(new Error('400_BAD_REQUEST: \'name\' param is currently required to filter'));
       } else {
+        term = decodeURIComponent(term.toLowerCase())
+
         console.log('Term to send to es: ', term)
 
         es.search({
